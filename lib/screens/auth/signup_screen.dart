@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_screen.dart'; 
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,7 +21,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _signUp() {
     if (_formKey.currentState!.validate()) {
-    
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Creating account...")),
       );
@@ -30,10 +30,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink[50],
+      backgroundColor: Colors.white, // ✅ White background
       appBar: AppBar(
-        title: const Text("Sign Up"),
+        title: const Text(
+          "Sign Up",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.pinkAccent,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -41,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              // Business logo
+              // Business Logo
               Center(
                 child: Column(
                   children: [
@@ -62,13 +66,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
 
-              // Name
+              // Full Name
               TextFormField(
                 controller: _nameController,
+                style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
                   labelText: "Full Name",
+                  labelStyle: TextStyle(fontSize: 14),
                   prefixIcon: Icon(Icons.person, color: Colors.pinkAccent),
                   border: OutlineInputBorder(),
                 ),
@@ -81,9 +87,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // Email or Phone
               TextFormField(
                 controller: _contactController,
+                style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
                   labelText: "Email or Phone Number",
-                  prefixIcon: Icon(Icons.contact_mail, color: Colors.pinkAccent),
+                  labelStyle: TextStyle(fontSize: 14),
+                  prefixIcon:
+                      Icon(Icons.contact_mail, color: Colors.pinkAccent),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) =>
@@ -96,8 +105,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
+                style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   labelText: "Password",
+                  labelStyle: const TextStyle(fontSize: 14),
                   prefixIcon: const Icon(Icons.lock, color: Colors.pinkAccent),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
@@ -114,8 +125,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                validator: (value) =>
-                    value!.length < 6 ? "Password must be at least 6 characters" : null,
+                validator: (value) => value!.length < 6
+                    ? "Password must be at least 6 characters"
+                    : null,
               ),
 
               const SizedBox(height: 20),
@@ -124,9 +136,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirmPassword,
+                style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
-                  prefixIcon: const Icon(Icons.lock_outline, color: Colors.pinkAccent),
+                  labelStyle: const TextStyle(fontSize: 14),
+                  prefixIcon:
+                      const Icon(Icons.lock_outline, color: Colors.pinkAccent),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -165,8 +180,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 child: const Text(
                   "Sign Up",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // ✅ Link to Login
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Already have an account? ",
+                      style: TextStyle(fontSize: 14)),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.pinkAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

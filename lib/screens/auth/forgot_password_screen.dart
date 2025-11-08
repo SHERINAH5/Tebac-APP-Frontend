@@ -8,11 +8,15 @@ class ForgotPasswordScreen extends StatelessWidget {
     final _emailController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: Colors.pink[50],
+      backgroundColor: Colors.white, // ✅ Clean white background
       appBar: AppBar(
-        title: const Text("Forgot Password"),
+        title: const Text(
+          "Forgot Password",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.pinkAccent,
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -22,11 +26,12 @@ class ForgotPasswordScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 30),
 
-              // Illustration (add your image here)
+              // Illustration 
               Center(
                 child: Image.asset(
-                  'as.png', // Add your illustration here
+                  'images/icon1.jpeg', 
                   height: 200,
+                  fit: BoxFit.contain,
                 ),
               ),
 
@@ -47,7 +52,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               const Text(
                 "Enter your email address below and we’ll send you a link to reset your password.",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                style: TextStyle(fontSize: 14, color: Colors.black87),
               ),
 
               const SizedBox(height: 30),
@@ -55,8 +60,10 @@ class ForgotPasswordScreen extends StatelessWidget {
               // Email Input
               TextField(
                 controller: _emailController,
+                style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
                   labelText: "Email Address",
+                  labelStyle: TextStyle(fontSize: 14),
                   prefixIcon: Icon(Icons.email, color: Colors.pinkAccent),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -75,21 +82,21 @@ class ForgotPasswordScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.pinkAccent,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15, horizontal: 40),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: const Text(
                   "Send Reset Link",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
 
               const SizedBox(height: 20),
 
-              // Back to Login link
+              // ✅ Back to Login link
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -99,6 +106,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.pinkAccent,
                     fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
                 ),
               ),

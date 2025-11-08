@@ -14,116 +14,136 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.white, Color(0xFFFFE4F1)], // white to soft pink
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: PageView(
-          controller: _controller,
-          onPageChanged: (index) {
-            setState(() => isLastPage = index == 2);
-          },
+      backgroundColor: Colors.white, // Ensure white background for all screens
+      body: SafeArea(
+        child: Stack(
           children: [
-            buildPage(
-              image: 'images/coart2.jpeg',
-              title: 'Welcome to My App',
-              description: 'Easily manage your tasks anywhere, anytime.',
+            // PageView content
+            PageView(
+              controller: _controller,
+              onPageChanged: (index) {
+                setState(() => isLastPage = index == 2);
+              },
+              children: [
+                buildPage(
+                  image: 'images/coart2.jpeg',
+                  title: 'Welcome to My App',
+                  description:
+                      'Easily manage your tasks anywhere, anytime with smart organization tools.',
+                ),
+                buildPage(
+                  image: 'images/coart4.jpeg',
+                  title: 'Stay Organized',
+                  description:
+                      'Track progress, stay focused, and boost productivity with daily goals.',
+                ),
+                buildPage(
+                  image: 'images/coart1.jpeg',
+                  title: 'Achieve Your Goals',
+                  description:
+                      'Turn your plans into action and make every day meaningful.',
+                ),
+              ],
             ),
-            buildPage(
-              image: 'images/coart1.jpeg',
-              title: 'Stay Organized',
-              description: 'Track your daily progress with smart reminders.',
-            ),
-            buildPage(
-              image: 'images/coart2.jpeg',
-              title: 'Achieve Your Goals',
-              description: 'Turn your plans into action effortlessly.',
+
+            // Bottom navigation
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 120,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.15),
+                      blurRadius: 10,
+                      offset: const Offset(0, -3),
+                    ),
+                  ],
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                child: isLastPage
+                    ? ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const LoginScreen()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE91E63),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          elevation: 3,
+                        ),
+                        child: const Text(
+                          'Get Started',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () => _controller.jumpToPage(2),
+                            child: const Text(
+                              'Skip',
+                              style: TextStyle(
+                                color: Color(0xFFE91E63),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              SmoothPageIndicator(
+                                controller: _controller,
+                                count: 3,
+                                effect: const ExpandingDotsEffect(
+                                  activeDotColor: Color(0xFFE91E63),
+                                  dotColor: Colors.grey,
+                                  dotHeight: 10,
+                                  dotWidth: 10,
+                                  expansionFactor: 3,
+                                  spacing: 5,
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              FloatingActionButton(
+                                backgroundColor: const Color(0xFFE91E63),
+                                onPressed: () => _controller.nextPage(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                ),
+                                child: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
             ),
           ],
         ),
       ),
-
-      bottomSheet: isLastPage
-          ? TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE91E63), // pink button
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Get Started',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            )
-          : Container(
-              height: 80,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Skip Button
-                  TextButton(
-                    child: const Text(
-                      'Skip',
-                      style: TextStyle(
-                        color: Color(0xFFE91E63),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    onPressed: () => _controller.jumpToPage(2),
-                  ),
-
-                  // Page Indicator + Next Button
-                  Row(
-                    children: [
-                      SmoothPageIndicator(
-                        controller: _controller,
-                        count: 3,
-                        effect: const WormEffect(
-                          activeDotColor: Color(0xFFE91E63),
-                          dotColor: Colors.grey,
-                          dotHeight: 10,
-                          dotWidth: 10,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      TextButton(
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(
-                            color: Color(0xFFE91E63),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        onPressed: () => _controller.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
     );
   }
 
@@ -132,30 +152,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     required String title,
     required String description,
   }) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(image, height: 300),
-        const SizedBox(height: 40),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFE91E63),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 20),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(image, height: 320, fit: BoxFit.cover),
           ),
-        ),
-        const SizedBox(height: 15),
-        Text(
-          description,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.grey[700],
-            height: 1.4,
+          Column(
+            children: [
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFE91E63),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.grey[800],
+                  height: 1.5,
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+          const SizedBox(height: 80),
+        ],
+      ),
     );
   }
 }

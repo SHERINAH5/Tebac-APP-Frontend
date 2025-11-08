@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'products_screen.dart';
+import 'recommendation_screen.dart';
+import 'contact_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,8 +15,9 @@ class HomeScreen extends StatelessWidget {
           'TEBAC Designers',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Color(0xFFE91E63), // pink 
+        backgroundColor: Color(0xFFE91E63), // pink
         centerTitle: true,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -61,7 +65,10 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.style,
                 label: 'View Collection',
                 onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductsScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ProductsScreen()),
+                  );
                 },
               ),
               const SizedBox(height: 15),
@@ -71,7 +78,10 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.recommend,
                 label: 'Recommended for You',
                 onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => RecommendationScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const RecommendationScreen()),
+                  );
                 },
               ),
               const SizedBox(height: 15),
@@ -81,7 +91,10 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.contact_phone,
                 label: 'Contact Us',
                 onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => ContactScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ContactScreen()),
+                  );
                 },
               ),
               const SizedBox(height: 40),
@@ -99,8 +112,12 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Reusable button builder
-  Widget buildButton(BuildContext context,
-      {required IconData icon, required String label, required VoidCallback onTap}) {
+  Widget buildButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
@@ -113,7 +130,9 @@ class HomeScreen extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFE91E63),
           padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           elevation: 2,
         ),
       ),

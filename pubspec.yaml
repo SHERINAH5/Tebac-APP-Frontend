@@ -29,4 +29,6 @@ flutter:
   assets:
     - images/coart1.jpeg
     - images/coart2.jpeg
+    - images/coart4.jpeg
     - images/logo1.jpeg
+    - images/icon1.jpeg
