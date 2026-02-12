@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -26,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
         CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _controller.forward();
 
-    // Move to Onboarding after 3 seconds
+    // Navigate to onboarding after 3 seconds (removed const here)
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
@@ -45,39 +47,56 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white, Color(0xFFFFE4F1)], // Soft white to pink blend
+            colors: [Colors.white, Color(0xFFFFE4F1)], // soft pink gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // App logo or icon
-                Image.asset('images/logo1.jpeg', height: 100),
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo
+              Image.asset(
+                'images/logo1.jpeg',
+                height: 120,
+              ),
+              const SizedBox(height: 25),
 
-                const SizedBox(height: 20),
-                const Text(
-                  "Tebac Designers",
-                  style: TextStyle(
-                    color: Color(0xFFE91E63), // Signature pink
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.3,
-                  ),
+              // App name
+              const Text(
+                "Tebac Designers",
+                style: TextStyle(
+                  color: Color(0xFFE91E63),
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.4,
                 ),
-                const SizedBox(height: 40),
-                const CircularProgressIndicator(
-                  color: Color(0xFFE91E63), // Matching pink loader
-                  strokeWidth: 3,
+              ),
+
+              const SizedBox(height: 8),
+              const Text(
+                "Always Perfect",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  letterSpacing: 1.1,
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 45),
+
+              // Loading spinner
+              const CircularProgressIndicator(
+                color: Color(0xFFE91E63),
+                strokeWidth: 3,
+              ),
+            ],
           ),
         ),
       ),

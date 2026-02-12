@@ -13,6 +13,8 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   cupertino_icons: ^1.0.8
 
+  image_picker: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -29,4 +31,6 @@ flutter:
   assets:
     - images/coart1.jpeg
     - images/coart2.jpeg
+    - images/coart4.jpeg
     - images/logo1.jpeg
+    - images/icon1.jpeg
