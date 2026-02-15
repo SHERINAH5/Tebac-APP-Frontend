@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import '../home_screen.dart';
+import '../main_navigation.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,16 +26,17 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Color(0xFFE91E63), // Pink
         ),
       );
-
-      // Simulate login success
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
-      });
     }
-  }
+      // Simulate login success
+
+Future.delayed(const Duration(seconds: 1), () {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const MainNavigation()),
+  );
+});
+ }
+
 
   @override
   Widget build(BuildContext context) {
