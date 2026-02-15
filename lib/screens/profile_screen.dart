@@ -12,9 +12,11 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   File? _image;
 
-  // TEMP user data (replace with API data later)
+  // TEMP user data (replace with API later)
   String fullName = "Eng. Sherinah";
   String email = "arindasherinah@gmail.com";
+  String contact = "+256770381164";
+  String bio = "Fashion designer passionate about elegance & style";
 
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -66,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _logout() {
-    // Later: clear tokens + redirect
+    // TODO: Clear tokens + redirect to login
     Navigator.pop(context);
   }
 
@@ -88,17 +90,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             GestureDetector(
               onTap: _showImageOptions,
               child: CircleAvatar(
-                radius: 65,
+                radius: 70,
                 backgroundColor: const Color(0xFFFFE4EC),
                 backgroundImage: _image != null
                     ? FileImage(_image!)
-                    : const AssetImage(
-                        'assets/default_profile.png',
-                      ) as ImageProvider,
+                    : const AssetImage('images/default_profile.jpeg')
+                        as ImageProvider,
               ),
             ),
-
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             TextButton(
               onPressed: _showImageOptions,
               child: const Text(
@@ -106,12 +106,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(color: Color(0xFFE91E63)),
               ),
             ),
-
             const SizedBox(height: 25),
 
             // User Info Card
             Card(
-              elevation: 2,
+              elevation: 3,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -122,6 +121,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _infoRow(Icons.person, "Full Name", fullName),
                     const Divider(),
                     _infoRow(Icons.email, "Email", email),
+                    const Divider(),
+                    _infoRow(Icons.phone, "Contact", contact),
+                    const Divider(),
+                    _infoRow(Icons.info, "Bio", bio),
                   ],
                 ),
               ),
@@ -129,10 +132,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 30),
 
+            // Profile Stats (Optional)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _brandStat("120+", "Designs"),
+                _brandStat("500+", "Clients"),
+                _brandStat("5★", "Rating"),
+              ],
+            ),
+
+            const SizedBox(height: 30),
+
             // Edit Profile Button
             ElevatedButton.icon(
               onPressed: () {
-                // Navigate to Edit Profile later
+                // Navigate to Edit Profile screen later
               },
               icon: const Icon(Icons.edit),
               label: const Text("Edit Profile"),
@@ -186,21 +201,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Text(
                 label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black54,
-                ),
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
               ),
               const SizedBox(height: 4),
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _brandStat(String number, String label) {
+    return Column(
+      children: [
+        Text(
+          number,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFE91E63),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, color: Colors.black54),
         ),
       ],
     );

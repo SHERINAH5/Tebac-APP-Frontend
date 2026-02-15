@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
 
-      /// 🧠 BODY
+      /// BODY
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
