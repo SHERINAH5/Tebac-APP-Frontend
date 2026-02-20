@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'my_orders_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -165,6 +166,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             const SizedBox(height: 15),
+            ListTile(
+  leading: const Icon(Icons.shopping_bag),
+  title: const Text("My Orders"),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => MyOrdersScreen()),
+    );
+  },
+),
 
             // Logout Button
             OutlinedButton.icon(

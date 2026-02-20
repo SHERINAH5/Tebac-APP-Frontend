@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'home_screen.dart';
 import 'products_screen.dart';
-import 'recommendation_screen.dart';
+import 'my_orders_screen.dart';
 import 'profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -14,12 +15,19 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    ProductsScreen(),
-    RecommendationScreen(),
-    ProfileScreen(),
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _screens = [
+      const HomeScreen(),
+      const ProductsScreen(),
+      MyOrdersScreen(), // ❌ NOT const (important!)
+      const ProfileScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +57,8 @@ class _MainNavigationState extends State<MainNavigation> {
             label: "Products",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.recommend),
-            label: "For You",
+            icon: Icon(Icons.shopping_bag),
+            label: "My Orders",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
