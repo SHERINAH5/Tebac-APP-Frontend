@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'my_orders_screen.dart';
 
 class CustomOrderScreen extends StatefulWidget {
   final String productName;
@@ -29,6 +30,21 @@ class _CustomOrderScreenState extends State<CustomOrderScreen> {
 
   String fabric = "Cotton";
   String delivery = "Pickup";
+
+  @override
+void dispose() {
+  fullNameController.dispose();
+  phoneController.dispose();
+  chestController.dispose();
+  waistController.dispose();
+  hipsController.dispose();
+  shoulderController.dispose();
+  sleeveController.dispose();
+  lengthController.dispose();
+  notesController.dispose();
+  addressController.dispose();
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -128,16 +144,24 @@ class _CustomOrderScreenState extends State<CustomOrderScreen> {
     );
   }
 
-  void _submitOrder() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Order submitted successfully!")),
-      );
-
-      // Later: send data to backend
-      Navigator.pop(context);
-    }
+void _submitOrder() {
+  if (_formKey.currentState!.validate()) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text("Order placed successfully"),
+        action: SnackBarAction(
+          label: "My Orders",
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => MyOrdersScreen()),
+            );
+          },
+        ),
+      ),
+    );
   }
+}
 
   Widget sectionTitle(String title) {
     return Padding(

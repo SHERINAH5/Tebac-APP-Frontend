@@ -3,6 +3,8 @@ import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import '../home_screen.dart';
 import '../main_navigation.dart';
+import '../services/auth_service.dart';
+import '../admin/admin_dashboard.dart';
 
 
 
@@ -28,15 +30,60 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
       // Simulate login success
+void _login() async {
+  if (!_formKey.currentState!.validate()) return;
 
-Future.delayed(const Duration(seconds: 1), () {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const MainNavigation()),
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text("Logging in..."),
+      backgroundColor: Color(0xFFE91E63),
+    ),
   );
-});
- }
 
+  try {
+    final response = await AuthService.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (response["success"] == true) {
+      final userRole = response["data"]["user"]["type"]; 
+      // OR "role" depending on backend
+
+      Future.delayed(const Duration(seconds: 1), () {
+        if (userRole == "admin") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AdminDashboard(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const MainNavigation(),
+            ),
+          );
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response["message"] ?? "Login failed"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Network error. Please try again."),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
