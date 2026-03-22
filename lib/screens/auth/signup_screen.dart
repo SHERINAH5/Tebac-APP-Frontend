@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart'; 
+import '../../services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -10,22 +11,54 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
-  final _contactController = TextEditingController(); // phone or email
+  final _emailController = TextEditingController();
+  final _contactController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-
+ 
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
 
-  void _signUp() {
-    if (_formKey.currentState!.validate()) {
+void _signUp() async {
+  if (!_formKey.currentState!.validate()) return;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text("Creating account...")),
+  );
+
+  try {
+    final payload = {
+      "name": _nameController.text.trim(),
+      "email": _emailController.text.trim(),
+      "contact": _contactController.text.trim(),
+      "password": _passwordController.text,
+    };
+
+    final response = await AuthService.register(payload);
+
+    if (response['success'] == true) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Creating account...")),
+        const SnackBar(
+          content: Text("Account created successfully. Please login."),
+          backgroundColor: Colors.green,
+        ),
       );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    } else {
+      throw Exception(response['message']);
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.toString().replaceAll('Exception:', '')),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +119,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               // Email or Phone
               TextFormField(
-                controller: _contactController,
-                style: const TextStyle(fontSize: 14),
-                decoration: const InputDecoration(
-                  labelText: "Email or Phone Number",
-                  labelStyle: TextStyle(fontSize: 14),
-                  prefixIcon:
-                      Icon(Icons.contact_mail, color: Colors.pinkAccent),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value!.isEmpty ? "Please enter email or phone" : null,
-              ),
+  controller: _emailController,
+  decoration: const InputDecoration(
+    labelText: "Email",
+    prefixIcon: Icon(Icons.email, color: Colors.pinkAccent),
+    border: OutlineInputBorder(),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) return "Email is required";
+    if (!value.contains('@')) return "Enter a valid email";
+    return null;
+  },
+),
+
+TextFormField(
+  controller: _contactController,
+  decoration: const InputDecoration(
+    labelText: "Contact",
+    prefixIcon: Icon(Icons.phone, color: Colors.pinkAccent),
+    border: OutlineInputBorder(),
+  ),
+  validator: (value) =>
+      value == null || value.isEmpty ? " Contact is required" : null,
+),
 
               const SizedBox(height: 20),
 
@@ -132,41 +176,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 20),
 
-              // Confirm Password
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: _obscureConfirmPassword,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  labelText: "Confirm Password",
-                  labelStyle: const TextStyle(fontSize: 14),
-                  prefixIcon:
-                      const Icon(Icons.lock_outline, color: Colors.pinkAccent),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirmPassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.pinkAccent,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
-                    },
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) return "Please confirm your password";
-                  if (value != _passwordController.text) {
-                    return "Passwords do not match";
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 30),
 
               // Sign Up button
               ElevatedButton(

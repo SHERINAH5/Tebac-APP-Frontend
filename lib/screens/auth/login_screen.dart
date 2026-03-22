@@ -3,8 +3,8 @@ import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import '../home_screen.dart';
 import '../main_navigation.dart';
-import '../services/auth_service.dart';
-import '../admin/admin_dashboard.dart';
+import '../../services/auth_service.dart';
+import '../../admin/admin_dashboard.dart';
 
 
 
@@ -20,15 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Logging in..."),
-          backgroundColor: Color(0xFFE91E63), // Pink
-        ),
-      );
-    }
+  
       // Simulate login success
 void _login() async {
   if (!_formKey.currentState!.validate()) return;
@@ -46,31 +38,26 @@ void _login() async {
       _passwordController.text.trim(),
     );
 
-    if (response["success"] == true) {
-      final userRole = response["data"]["user"]["type"]; 
-      // OR "role" depending on backend
+    if (response['success'] == true) {
+      final user = response['user'];
+      final role = user['role'];
 
-      Future.delayed(const Duration(seconds: 1), () {
-        if (userRole == "admin") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const AdminDashboard(),
-            ),
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const MainNavigation(),
-            ),
-          );
-        }
-      });
+      // 🔑 ROLE-BASED NAVIGATION
+      if (role == 'admin' || role == 'super_admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminDashboard()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MainNavigation()),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(response["message"] ?? "Login failed"),
+          content: Text(response['message'] ?? 'Login failed'),
           backgroundColor: Colors.red,
         ),
       );
